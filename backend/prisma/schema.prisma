@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum BatchStatus {
+  ACTIVE
+  DEPLETED
+  EXPIRED
+}
+
+enum MutationType {
+  INBOUND
+  DISPATCH
+}
+
+model FeedItem {
+  id            String   @id @default(uuid())
+  sku           String   @unique
+  name          String
+  category      String
+  unit          String
+  min_stock     Int      @default(0)
+  current_stock Int      @default(0)
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  batches   StockBatch[]
+  mutations StockMutation[]
+
+  @@map("feed_items")
+}
+
+model StockBatch {
+  id           String      @id @default(uuid())
+  batch_number String      @unique
+  feed_item_id String
+  expired_date DateTime
+  initial_qty  Int
+  current_qty  Int
+  qr_payload   String      @unique
+  status       BatchStatus @default(ACTIVE)
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @updatedAt
+
+  feed_item FeedItem        @relation(fields: [feed_item_id], references: [id], onDelete: Cascade)
+  mutations StockMutation[]
+
+  @@index([feed_item_id])
+  @@index([status])
+  @@map("stock_batches")
+}
+
+model StockMutation {
+  id           String       @id @default(uuid())
+  batch_id     String
+  feed_item_id String
+  type         MutationType
+  quantity     Int
+  notes        String?
+  created_by   String
+  created_at   DateTime     @default(now())
+
+  batch     StockBatch @relation(fields: [batch_id], references: [id], onDelete: Cascade)
+  feed_item FeedItem   @relation(fields: [feed_item_id], references: [id], onDelete: Cascade)
+
+  @@index([feed_item_id])
+  @@index([batch_id])
+  @@index([type])
+  @@index([created_at])
+  @@map("stock_mutations")
+}

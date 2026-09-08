@@ -1,0 +1,37 @@
+{
+  "expo": {
+    "name": "HiFeed Scanner",
+    "slug": "hifeed-mobile-scanner",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "scheme": "hifeed",
+    "splash": {
+      "backgroundColor": "#0a0e1a"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.hifeed.scanner",
+      "infoPlist": {
+        "NSCameraUsageDescription": "HiFeed Scanner membutuhkan akses kamera untuk memindai barcode/QR code pada palet pakan."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0a0e1a"
+      },
+      "package": "com.hifeed.scanner",
+      "permissions": ["android.permission.CAMERA"]
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Izinkan HiFeed Scanner mengakses kamera untuk memindai barcode/QR code."
+        }
+      ],
+      "expo-router"
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "hifeed-scom-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "HiFeed SCOM - Supply Chain & Operations Management Monorepo",
+  "scripts": {
+    "backend": "npm run dev --prefix backend",
+    "frontend": "npm run dev --prefix frontend",
+    "mobile": "npm run start --prefix mobile",
+    "start:backend": "npm run dev --prefix backend",
+    "start:frontend": "npm run dev --prefix frontend",
+    "start:mobile": "npm run start --prefix mobile"
+  },
+  "workspaces": [
+    "backend",
+    "frontend",
+    "mobile"
+  ]
+}

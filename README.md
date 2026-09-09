@@ -1,7 +1,5 @@
 # HiFeed Supply Chain & Operations Management
 
----
-
 ## Arsitektur & Komponen Sistem
 
 Sistem ini dirancang dengan model **Monorepo (npm workspaces)** yang memisahkan tanggung jawab menjadi 3 aplikasi spesifik:

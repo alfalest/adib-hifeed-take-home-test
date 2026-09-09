@@ -170,12 +170,12 @@ export default function ConfirmScreen() {
           <View style={[
             styles.statusBadge,
             batch.status === 'ACTIVE' ? styles.statusActive :
-            batch.status === 'DEPLETED' ? styles.statusDepleted : styles.statusExpired
+              batch.status === 'DEPLETED' ? styles.statusDepleted : styles.statusExpired
           ]}>
             <Text style={[
               styles.statusText,
               batch.status === 'ACTIVE' ? styles.statusTextActive :
-              batch.status === 'DEPLETED' ? styles.statusTextDepleted : styles.statusTextExpired
+                batch.status === 'DEPLETED' ? styles.statusTextDepleted : styles.statusTextExpired
             ]}>
               {batch.status}
             </Text>
@@ -208,7 +208,7 @@ export default function ConfirmScreen() {
           <View style={styles.detailItem}>
             <Text style={styles.detailLabel}>Kategori</Text>
             <Text style={styles.detailValue}>
-              {batch.feed_item.category === 'POULTRY' ? '🐔' : '🐄'} {batch.feed_item.category}
+              {batch.feed_item.category}
             </Text>
           </View>
         </View>

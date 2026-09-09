@@ -36,7 +36,7 @@ export default function BatchesPage() {
   return (
     <>
       <div className="page-header">
-        <h2>🏷️ Batch Pakan & Generator QR Code</h2>
+        <h2>Batch Pakan & Generator QR Code</h2>
         <p>Lihat daftar batch aktif dan pindai (scan) QR code langsung dari layar laptop/HP Anda</p>
       </div>
 
@@ -73,7 +73,7 @@ export default function BatchesPage() {
       ) : (
         <div className="table-container">
           <div className="table-header">
-            <h3>📋 Daftar Batch Pakan ({filteredBatches.length})</h3>
+            <h3>Daftar Batch Pakan ({filteredBatches.length})</h3>
           </div>
           <table>
             <thead>
@@ -152,7 +152,7 @@ export default function BatchesPage() {
                           transition: 'all var(--transition-fast)'
                         }}
                       >
-                        📱 Tampilkan QR
+                        Generate QR Code
                       </button>
                     </td>
                   </tr>
@@ -192,7 +192,7 @@ export default function BatchesPage() {
             }}
           >
             <h3 style={{ marginBottom: '4px', fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>
-              📱 QR Code Batch
+              QR Code Batch
             </h3>
             <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '20px' }}>{selectedQr.name}</p>
 

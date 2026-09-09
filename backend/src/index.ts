@@ -30,9 +30,9 @@ app.use(errorHandler);
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`🚀 HiFeed Backend API running on http://localhost:${PORT}`);
-  console.log(`📋 Health check: http://localhost:${PORT}/api/health`);
-  console.log(`📦 Inventory API: http://localhost:${PORT}/api/v1/inventory`);
+  console.log(`HiFeed Backend API running on http://localhost:${PORT}`);
+  console.log(`Health check: http://localhost:${PORT}/api/health`);
+  console.log(`Inventory API: http://localhost:${PORT}/api/v1/inventory`);
 });
 
 export default app;

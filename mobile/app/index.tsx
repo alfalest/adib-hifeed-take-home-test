@@ -221,95 +221,95 @@ export default function ScannerScreen() {
             />
             {/* Scanner Overlay */}
             <View style={styles.scannerOverlay}>
-                <View style={styles.scannerHeader}>
-                  {/* User Bar */}
-                  <View style={styles.userBar}>
-                    <View style={styles.userInfoLeft}>
-                      <View style={[styles.userAvatar, user.role === 'supervisor' ? styles.userAvatarSupervisor : styles.userAvatarStaff]}>
-                        <Text style={styles.userAvatarText}>{user.role === 'supervisor' ? 'SV' : 'ST'}</Text>
-                      </View>
-                      <View>
-                        <Text style={styles.userNameText}>{user.name}</Text>
-                        <Text style={[styles.userRoleBadge, user.role === 'supervisor' ? styles.userRoleSupervisor : styles.userRoleStaff]}>
-                          {user.role === 'supervisor' ? 'Supervisor Gudang' : 'Staff Lapangan'}
-                        </Text>
-                      </View>
+              <View style={styles.scannerHeader}>
+                {/* User Bar */}
+                <View style={styles.userBar}>
+                  <View style={styles.userInfoLeft}>
+                    <View style={[styles.userAvatar, user.role === 'supervisor' ? styles.userAvatarSupervisor : styles.userAvatarStaff]}>
+                      <Text style={styles.userAvatarText}>{user.role === 'supervisor' ? 'SV' : 'ST'}</Text>
                     </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                      {user.role === 'supervisor' && (
-                        <TouchableOpacity
-                          onPress={() => router.replace('/dashboard')}
-                          style={styles.backDashboardBtn}
-                          activeOpacity={0.8}
-                        >
-                          <Text style={styles.backDashboardBtnText}>📊 Dashboard</Text>
-                        </TouchableOpacity>
-                      )}
-                      <TouchableOpacity onPress={handleLogout} style={styles.logoutBtn}>
-                        <Text style={styles.logoutBtnText}>Keluar</Text>
+                    <View>
+                      <Text style={styles.userNameText}>{user.name}</Text>
+                      <Text style={[styles.userRoleBadge, user.role === 'supervisor' ? styles.userRoleSupervisor : styles.userRoleStaff]}>
+                        {user.role === 'supervisor' ? 'Supervisor Gudang' : 'Staff Lapangan'}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                    {user.role === 'supervisor' && (
+                      <TouchableOpacity
+                        onPress={() => router.replace('/dashboard')}
+                        style={styles.backDashboardBtn}
+                        activeOpacity={0.8}
+                      >
+                        <Text style={styles.backDashboardBtnText}>📊 Dashboard</Text>
                       </TouchableOpacity>
-                    </View>
+                    )}
+                    <TouchableOpacity onPress={handleLogout} style={styles.logoutBtn}>
+                      <Text style={styles.logoutBtnText}>Keluar</Text>
+                    </TouchableOpacity>
                   </View>
-
-                  <View style={styles.scannerLogoContainer}>
-                    <Image
-                      source={require('../assets/logo.png')}
-                      style={styles.scannerLogo}
-                      resizeMode="contain"
-                    />
-                  </View>
-                  <Text style={styles.scannerTitle}>📦 Scan Pakan</Text>
-                  <Text style={styles.scannerSubtitle}>
-                    Arahkan kamera ke QR Code / Barcode pada karung atau palet pakan
-                  </Text>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setServerUrlInput(getApiBaseUrl());
-                      setShowServerConfig(true);
-                    }}
-                    style={styles.serverBadge}
-                  >
-                    <Text style={styles.serverBadgeText}>⚙️ {getApiBaseUrl()}</Text>
-                  </TouchableOpacity>
                 </View>
 
-                {/* Scanner Frame */}
-                <View style={styles.scannerFrame}>
-                  <View style={[styles.corner, styles.cornerTL]} />
-                  <View style={[styles.corner, styles.cornerTR]} />
-                  <View style={[styles.corner, styles.cornerBL]} />
-                  <View style={[styles.corner, styles.cornerBR]} />
-                  <View style={styles.scanLine} />
+                <View style={styles.scannerLogoContainer}>
+                  <Image
+                    source={require('../assets/logo.png')}
+                    style={styles.scannerLogo}
+                    resizeMode="contain"
+                  />
                 </View>
-
-                {/* Controls */}
-                <View style={styles.controlsRow}>
-                  <TouchableOpacity
-                    style={[styles.controlButton, torch && styles.controlButtonActive]}
-                    onPress={() => setTorch(!torch)}
-                  >
-                    <Text style={styles.controlButtonText}>
-                      {torch ? '💡 Flash ON' : '🔦 Flash'}
-                    </Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={styles.controlButton}
-                    onPress={() => setShowManualInput(true)}
-                  >
-                    <Text style={styles.controlButtonText}>⌨️ Manual</Text>
-                  </TouchableOpacity>
-                </View>
-
-                {scanned && (
-                  <TouchableOpacity
-                    style={styles.rescanButton}
-                    onPress={() => setScanned(false)}
-                  >
-                    <Text style={styles.rescanButtonText}>🔄 Scan Ulang</Text>
-                  </TouchableOpacity>
-                )}
+                <Text style={styles.scannerTitle}>Scan Pakan</Text>
+                <Text style={styles.scannerSubtitle}>
+                  Arahkan kamera ke QR Code / Barcode pada karung atau palet pakan
+                </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    setServerUrlInput(getApiBaseUrl());
+                    setShowServerConfig(true);
+                  }}
+                  style={styles.serverBadge}
+                >
+                  <Text style={styles.serverBadgeText}>⚙️ {getApiBaseUrl()}</Text>
+                </TouchableOpacity>
               </View>
+
+              {/* Scanner Frame */}
+              <View style={styles.scannerFrame}>
+                <View style={[styles.corner, styles.cornerTL]} />
+                <View style={[styles.corner, styles.cornerTR]} />
+                <View style={[styles.corner, styles.cornerBL]} />
+                <View style={[styles.corner, styles.cornerBR]} />
+                <View style={styles.scanLine} />
+              </View>
+
+              {/* Controls */}
+              <View style={styles.controlsRow}>
+                <TouchableOpacity
+                  style={[styles.controlButton, torch && styles.controlButtonActive]}
+                  onPress={() => setTorch(!torch)}
+                >
+                  <Text style={styles.controlButtonText}>
+                    {torch ? '💡 Flash ON' : '🔦 Flash'}
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.controlButton}
+                  onPress={() => setShowManualInput(true)}
+                >
+                  <Text style={styles.controlButtonText}>⌨️ Manual</Text>
+                </TouchableOpacity>
+              </View>
+
+              {scanned && (
+                <TouchableOpacity
+                  style={styles.rescanButton}
+                  onPress={() => setScanned(false)}
+                >
+                  <Text style={styles.rescanButtonText}>🔄 Scan Ulang</Text>
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
         </>
       ) : (

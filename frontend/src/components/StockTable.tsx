@@ -22,7 +22,7 @@ export default function StockTable({ items }: StockTableProps) {
   return (
     <div className="table-container">
       <div className="table-header">
-        <h3>📦 Daftar Produk Pakan</h3>
+        <h3>Daftar Produk Pakan</h3>
         <div className="table-actions">
           <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
             {items.length} item
@@ -58,9 +58,9 @@ export default function StockTable({ items }: StockTableProps) {
               return (
                 <tr key={item.id}>
                   <td>
-                    <code style={{ 
-                      background: 'var(--hifeed-light)', 
-                      padding: '3px 8px', 
+                    <code style={{
+                      background: 'var(--hifeed-light)',
+                      padding: '3px 8px',
                       borderRadius: '6px',
                       fontSize: '12px',
                       fontWeight: 600,
@@ -76,7 +76,7 @@ export default function StockTable({ items }: StockTableProps) {
                   </td>
                   <td>
                     <span className={`category-tag ${item.category.toLowerCase()}`}>
-                      {item.category === 'POULTRY' ? '🐔' : '🐄'} {item.category}
+                      {item.category}
                     </span>
                   </td>
                   <td style={{ color: 'var(--text-muted)', fontSize: '13px' }}>
@@ -85,16 +85,16 @@ export default function StockTable({ items }: StockTableProps) {
                   <td>
                     <div className="qty-display">
                       <span className="qty-value" style={{
-                        color: level === 'danger' ? 'var(--accent-danger)' : 
-                               level === 'warning' ? 'var(--accent-warning)' : 
-                               'var(--accent-success)'
+                        color: level === 'danger' ? 'var(--accent-danger)' :
+                          level === 'warning' ? 'var(--accent-warning)' :
+                            'var(--accent-success)'
                       }}>
                         {item.current_stock}
                       </span>
                       <div className="stock-bar">
-                        <div 
-                          className={`stock-bar-fill ${level}`} 
-                          style={{ width: `${getStockBarWidth(item)}%` }} 
+                        <div
+                          className={`stock-bar-fill ${level}`}
+                          style={{ width: `${getStockBarWidth(item)}%` }}
                         />
                       </div>
                     </div>

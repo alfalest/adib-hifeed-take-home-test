@@ -261,8 +261,8 @@ export default function SupervisorDashboardScreen() {
               activeTab === 'stock'
                 ? 'Cari nama pakan / SKU...'
                 : activeTab === 'batches'
-                ? 'Cari nomor batch...'
-                : 'Cari mutasi / nama petugas...'
+                  ? 'Cari nomor batch...'
+                  : 'Cari mutasi / nama petugas...'
             }
             placeholderTextColor="#64748b"
             value={searchQuery}
@@ -354,7 +354,7 @@ export default function SupervisorDashboardScreen() {
               <View>
                 {filteredBatches.length === 0 ? (
                   <View style={styles.emptyCard}>
-                    <Text style={styles.emptyIcon}>🏷️</Text>
+                    {/* <Text style={styles.emptyIcon}>🏷️</Text> */}
                     <Text style={styles.emptyTitle}>Tidak ada batch ditemukan</Text>
                   </View>
                 ) : (
@@ -376,8 +376,8 @@ export default function SupervisorDashboardScreen() {
                               isExp
                                 ? styles.batchExpBadge
                                 : isNear
-                                ? styles.batchNearBadge
-                                : styles.batchActiveBadge,
+                                  ? styles.batchNearBadge
+                                  : styles.batchActiveBadge,
                             ]}
                           >
                             <Text
@@ -386,8 +386,8 @@ export default function SupervisorDashboardScreen() {
                                 isExp
                                   ? styles.batchExpText
                                   : isNear
-                                  ? styles.batchNearText
-                                  : styles.batchActiveText,
+                                    ? styles.batchNearText
+                                    : styles.batchActiveText,
                               ]}
                             >
                               {isExp ? 'EXPIRED' : isNear ? 'MENDEKATI EXP' : 'AKTIF'}
@@ -448,7 +448,7 @@ export default function SupervisorDashboardScreen() {
               <View>
                 {filteredMutations.length === 0 ? (
                   <View style={styles.emptyCard}>
-                    <Text style={styles.emptyIcon}>📋</Text>
+                    {/* <Text style={styles.emptyIcon}>📋</Text> */}
                     <Text style={styles.emptyTitle}>Belum ada riwayat mutasi</Text>
                   </View>
                 ) : (

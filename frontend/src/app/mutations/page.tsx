@@ -61,7 +61,7 @@ export default function MutationsPage() {
   return (
     <>
       <div className="page-header">
-        <h2>📋 Riwayat Mutasi Stok</h2>
+        <h2>Riwayat Mutasi Stok</h2>
         <p>Stock Ledger — Catatan audit pergerakan stok pakan</p>
       </div>
 

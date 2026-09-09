@@ -1,7 +1,5 @@
 # HiFeed Supply Chain & Operations Management
 
-Sistem manajemen inventori pakan ternak modern berbasis **QR Code**, **Role Based Access Control (RBAC)**, dan **Atomic Transaction** untuk menjamin akurasi stok secara _realtime_ tanpa risiko _race condition_ atau stok minus.
-
 ---
 
 ## Arsitektur & Komponen Sistem

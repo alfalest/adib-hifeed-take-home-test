@@ -20,7 +20,7 @@ export default function BatchesPage() {
       const res = await getBatches({ limit: '100' });
       setBatches(res.data);
     } catch (err: any) {
-      setError(err.message || 'Gagal memuat batch');
+      setError(err.message || 'Gagal memuat data Batch');
     } finally {
       setLoading(false);
     }
@@ -49,11 +49,12 @@ export default function BatchesPage() {
           style={{
             padding: '10px 16px',
             borderRadius: '8px',
-            border: '1px solid var(--border-color)',
-            background: 'var(--bg-card)',
-            color: 'var(--text-main)',
+            border: '1px solid #d1d5db',
+            background: '#ffffff',
+            color: 'var(--text-primary)',
             width: '320px',
             fontSize: '14px',
+            outline: 'none',
           }}
         />
       </div>
@@ -88,14 +89,18 @@ export default function BatchesPage() {
             </thead>
             <tbody>
               {filteredBatches.map((batch) => {
-                const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
-                  batch.qr_payload
-                )}`;
-
                 return (
                   <tr key={batch.id}>
                     <td>
-                      <code style={{ fontWeight: 600, color: 'var(--accent-primary-hover)' }}>
+                      <code style={{
+                        background: 'var(--hifeed-light)',
+                        padding: '3px 8px',
+                        borderRadius: '6px',
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        color: 'var(--accent-dark)',
+                        border: '1px solid rgba(0, 171, 126, 0.18)'
+                      }}>
                         {batch.batch_number}
                       </code>
                     </td>
@@ -133,17 +138,18 @@ export default function BatchesPage() {
                           })
                         }
                         style={{
-                          padding: '6px 12px',
-                          borderRadius: '6px',
-                          border: '1px solid var(--accent-primary)',
-                          background: 'rgba(99, 102, 241, 0.1)',
-                          color: 'var(--accent-primary-hover)',
+                          padding: '6px 14px',
+                          borderRadius: '8px',
+                          border: '1px solid rgba(0, 171, 126, 0.25)',
+                          background: 'var(--hifeed-light)',
+                          color: 'var(--accent-primary)',
                           cursor: 'pointer',
                           fontWeight: 600,
                           fontSize: '13px',
                           display: 'inline-flex',
                           alignItems: 'center',
                           gap: '6px',
+                          transition: 'all var(--transition-fast)'
                         }}
                       >
                         📱 Tampilkan QR
@@ -164,7 +170,8 @@ export default function BatchesPage() {
           style={{
             position: 'fixed',
             inset: 0,
-            background: 'rgba(0,0,0,0.7)',
+            background: 'rgba(15, 23, 42, 0.6)',
+            backdropFilter: 'blur(4px)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -174,26 +181,30 @@ export default function BatchesPage() {
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              background: 'var(--bg-card)',
+              background: '#ffffff',
               padding: '28px',
-              borderRadius: '16px',
-              maxWidth: '400px',
+              borderRadius: '20px',
+              maxWidth: '420px',
               width: '90%',
               textAlign: 'center',
-              boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)',
+              boxShadow: 'var(--shadow-lg)',
               border: '1px solid var(--border-color)',
             }}
           >
-            <h3 style={{ marginBottom: '4px', fontSize: '18px', color: 'var(--text-main)' }}>📱 QR Code Batch</h3>
-            <p style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '16px' }}>{selectedQr.name}</p>
+            <h3 style={{ marginBottom: '4px', fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>
+              📱 QR Code Batch
+            </h3>
+            <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '20px' }}>{selectedQr.name}</p>
 
             <div
               style={{
                 background: '#ffffff',
                 padding: '16px',
-                borderRadius: '12px',
+                borderRadius: '16px',
+                border: '1px solid #e2e8f0',
                 display: 'inline-block',
-                marginBottom: '16px',
+                marginBottom: '20px',
+                boxShadow: 'var(--shadow-sm)',
               }}
             >
               {/* Render QR code via QRServer API */}
@@ -210,18 +221,19 @@ export default function BatchesPage() {
 
             <div
               style={{
-                background: 'var(--bg-body)',
-                padding: '10px',
-                borderRadius: '8px',
+                background: '#f8fafc',
+                padding: '12px 16px',
+                borderRadius: '10px',
+                border: '1px solid #e2e8f0',
                 fontSize: '12px',
                 fontFamily: 'monospace',
                 wordBreak: 'break-all',
-                color: 'var(--text-muted)',
-                marginBottom: '20px',
+                color: 'var(--text-secondary)',
+                marginBottom: '24px',
                 textAlign: 'left',
               }}
             >
-              <strong>Payload QR:</strong>
+              <strong style={{ color: 'var(--text-primary)' }}>Payload QR:</strong>
               <br />
               {selectedQr.qrPayload}
             </div>
@@ -230,13 +242,16 @@ export default function BatchesPage() {
               onClick={() => setSelectedQr(null)}
               style={{
                 width: '100%',
-                padding: '10px',
-                borderRadius: '8px',
+                padding: '12px',
+                borderRadius: '10px',
                 border: 'none',
                 background: 'var(--accent-primary)',
-                color: '#fff',
+                color: '#ffffff',
                 fontWeight: 600,
+                fontSize: '14px',
                 cursor: 'pointer',
+                boxShadow: '0 2px 6px rgba(0, 171, 126, 0.3)',
+                transition: 'all var(--transition-fast)'
               }}
             >
               Tutup

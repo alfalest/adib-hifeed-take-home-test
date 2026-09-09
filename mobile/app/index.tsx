@@ -9,15 +9,18 @@ import {
   Dimensions,
   ActivityIndicator,
   Modal,
+  Image,
 } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { getApiBaseUrl, setCustomApiUrl } from '../lib/api';
+import { useAuth } from '../context/AuthContext';
 
 const { width } = Dimensions.get('window');
 const SCANNER_SIZE = width * 0.7;
 
 export default function ScannerScreen() {
+  const { user, isLoading, logout } = useAuth();
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
   const [showManualInput, setShowManualInput] = useState(false);
@@ -27,6 +30,34 @@ export default function ScannerScreen() {
   // Server IP config state
   const [showServerConfig, setShowServerConfig] = useState(false);
   const [serverUrlInput, setServerUrlInput] = useState(getApiBaseUrl());
+
+  const params = useLocalSearchParams<{ from?: string }>();
+
+  // Protect route: redirect to /login if not logged in
+  // Redirect supervisor to /dashboard unless specifically navigating to scanner from dashboard
+  useEffect(() => {
+    if (!isLoading) {
+      if (!user) {
+        router.replace('/login');
+      } else if (user.role === 'supervisor' && params.from !== 'dashboard') {
+        router.replace('/dashboard');
+      }
+    }
+  }, [user, isLoading, params.from]);
+
+  const handleLogout = () => {
+    Alert.alert('Konfirmasi Keluar', 'Apakah Anda yakin ingin keluar dari akun?', [
+      { text: 'Batal', style: 'cancel' },
+      {
+        text: 'Keluar',
+        style: 'destructive',
+        onPress: async () => {
+          await logout();
+          router.replace('/login');
+        },
+      },
+    ]);
+  };
 
   const handleBarCodeScanned = ({ type, data }: { type: string; data: string }) => {
     if (scanned) return;
@@ -68,6 +99,14 @@ export default function ScannerScreen() {
     setManualInput('');
   }, []);
 
+  if (isLoading || !user) {
+    return (
+      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+        <ActivityIndicator size="large" color="#00ab7e" />
+      </View>
+    );
+  }
+
   if (!permission) {
     return (
       <View style={styles.container}>
@@ -80,7 +119,13 @@ export default function ScannerScreen() {
     return (
       <View style={styles.container}>
         <View style={styles.permissionCard}>
-          <Text style={styles.permissionIcon}>📷</Text>
+          <View style={styles.permissionLogoContainer}>
+            <Image
+              source={require('../assets/logo.png')}
+              style={styles.permissionLogo}
+              resizeMode="contain"
+            />
+          </View>
           <Text style={styles.permissionTitle}>Izin Kamera Diperlukan</Text>
           <Text style={styles.permissionDesc}>
             HiFeed Scanner membutuhkan akses kamera untuk memindai barcode/QR code pada palet pakan.
@@ -173,10 +218,46 @@ export default function ScannerScreen() {
               }}
               onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
               enableTorch={torch}
-            >
-              {/* Scanner Overlay */}
-              <View style={styles.scannerOverlay}>
+            />
+            {/* Scanner Overlay */}
+            <View style={styles.scannerOverlay}>
                 <View style={styles.scannerHeader}>
+                  {/* User Bar */}
+                  <View style={styles.userBar}>
+                    <View style={styles.userInfoLeft}>
+                      <View style={[styles.userAvatar, user.role === 'supervisor' ? styles.userAvatarSupervisor : styles.userAvatarStaff]}>
+                        <Text style={styles.userAvatarText}>{user.role === 'supervisor' ? 'SV' : 'ST'}</Text>
+                      </View>
+                      <View>
+                        <Text style={styles.userNameText}>{user.name}</Text>
+                        <Text style={[styles.userRoleBadge, user.role === 'supervisor' ? styles.userRoleSupervisor : styles.userRoleStaff]}>
+                          {user.role === 'supervisor' ? 'Supervisor Gudang' : 'Staff Lapangan'}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                      {user.role === 'supervisor' && (
+                        <TouchableOpacity
+                          onPress={() => router.replace('/dashboard')}
+                          style={styles.backDashboardBtn}
+                          activeOpacity={0.8}
+                        >
+                          <Text style={styles.backDashboardBtnText}>📊 Dashboard</Text>
+                        </TouchableOpacity>
+                      )}
+                      <TouchableOpacity onPress={handleLogout} style={styles.logoutBtn}>
+                        <Text style={styles.logoutBtnText}>Keluar</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+
+                  <View style={styles.scannerLogoContainer}>
+                    <Image
+                      source={require('../assets/logo.png')}
+                      style={styles.scannerLogo}
+                      resizeMode="contain"
+                    />
+                  </View>
                   <Text style={styles.scannerTitle}>📦 Scan Pakan</Text>
                   <Text style={styles.scannerSubtitle}>
                     Arahkan kamera ke QR Code / Barcode pada karung atau palet pakan
@@ -229,14 +310,37 @@ export default function ScannerScreen() {
                   </TouchableOpacity>
                 )}
               </View>
-            </CameraView>
           </View>
         </>
       ) : (
         /* Manual Input */
         <View style={styles.manualContainer}>
           <View style={styles.manualCard}>
-            <Text style={styles.manualIcon}>⌨️</Text>
+            {/* User Bar in Manual Mode */}
+            <View style={[styles.userBar, { marginBottom: 16, backgroundColor: 'rgba(255, 255, 255, 0.04)', borderRadius: 12, padding: 8 }]}>
+              <View style={styles.userInfoLeft}>
+                <View style={[styles.userAvatar, user.role === 'supervisor' ? styles.userAvatarSupervisor : styles.userAvatarStaff]}>
+                  <Text style={styles.userAvatarText}>{user.role === 'supervisor' ? 'SV' : 'ST'}</Text>
+                </View>
+                <View>
+                  <Text style={styles.userNameText}>{user.name}</Text>
+                  <Text style={[styles.userRoleBadge, user.role === 'supervisor' ? styles.userRoleSupervisor : styles.userRoleStaff]}>
+                    {user.role === 'supervisor' ? 'Supervisor Gudang' : 'Staff Lapangan'}
+                  </Text>
+                </View>
+              </View>
+              <TouchableOpacity onPress={handleLogout} style={styles.logoutBtn}>
+                <Text style={styles.logoutBtnText}>Keluar</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.manualLogoContainer}>
+              <Image
+                source={require('../assets/logo.png')}
+                style={styles.manualLogo}
+                resizeMode="contain"
+              />
+            </View>
             <Text style={styles.manualTitle}>Input Manual</Text>
             <Text style={styles.manualDesc}>
               Masukkan batch number atau paste QR payload jika kamera tidak tersedia.
@@ -293,7 +397,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scannerOverlay: {
-    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -325,7 +433,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 32,
     height: 32,
-    borderColor: '#6366f1',
+    borderColor: '#00ab7e',
   },
   cornerTL: {
     top: 0, left: 0,
@@ -353,7 +461,7 @@ const styles = StyleSheet.create({
     left: 16,
     right: 16,
     height: 2,
-    backgroundColor: '#6366f1',
+    backgroundColor: '#00ab7e',
     opacity: 0.8,
     borderRadius: 1,
   },
@@ -370,8 +478,8 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.15)',
   },
   controlButtonActive: {
-    backgroundColor: 'rgba(99, 102, 241, 0.3)',
-    borderColor: '#6366f1',
+    backgroundColor: 'rgba(0, 171, 126, 0.25)',
+    borderColor: '#00ab7e',
   },
   controlButtonText: {
     color: '#f0f4ff',
@@ -379,7 +487,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   rescanButton: {
-    backgroundColor: '#6366f1',
+    backgroundColor: '#00ab7e',
     paddingHorizontal: 32,
     paddingVertical: 14,
     borderRadius: 12,
@@ -463,7 +571,7 @@ const styles = StyleSheet.create({
   // Button styles
   primaryButton: {
     width: '100%',
-    backgroundColor: '#6366f1',
+    backgroundColor: '#00ab7e',
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
@@ -473,6 +581,54 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '700',
+  },
+  scannerLogoContainer: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    backgroundColor: '#e8f5f0',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 6,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 171, 126, 0.3)',
+    marginBottom: 10,
+  },
+  scannerLogo: {
+    width: 30,
+    height: 30,
+  },
+  permissionLogoContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: 20,
+    backgroundColor: '#e8f5f0',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+    borderWidth: 2,
+    borderColor: 'rgba(0, 171, 126, 0.3)',
+    marginBottom: 20,
+  },
+  permissionLogo: {
+    width: 56,
+    height: 56,
+  },
+  manualLogoContainer: {
+    width: 60,
+    height: 60,
+    borderRadius: 16,
+    backgroundColor: '#e8f5f0',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 8,
+    borderWidth: 1.5,
+    borderColor: 'rgba(0, 171, 126, 0.3)',
+    marginBottom: 16,
+  },
+  manualLogo: {
+    width: 40,
+    height: 40,
   },
   secondaryButton: {
     width: '100%',
@@ -546,5 +702,85 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.03)',
     padding: 10,
     borderRadius: 8,
+  },
+
+  // User info bar styles
+  userBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    backgroundColor: 'rgba(10, 14, 26, 0.75)',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.08)',
+    marginBottom: 12,
+  },
+  userInfoLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  userAvatar: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  userAvatarStaff: {
+    backgroundColor: '#ff6b35',
+  },
+  userAvatarSupervisor: {
+    backgroundColor: '#00ab7e',
+  },
+  userAvatarText: {
+    color: '#ffffff',
+    fontSize: 11,
+    fontWeight: '700',
+  },
+  userNameText: {
+    color: '#f0f4ff',
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  userRoleBadge: {
+    fontSize: 10,
+    fontWeight: '600',
+    textTransform: 'uppercase',
+    letterSpacing: 0.4,
+    marginTop: 1,
+  },
+  userRoleStaff: {
+    color: '#ff8a50',
+  },
+  userRoleSupervisor: {
+    color: '#00ab7e',
+  },
+  backDashboardBtn: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
+    backgroundColor: '#00ab7e',
+  },
+  backDashboardBtnText: {
+    color: '#ffffff',
+    fontSize: 11,
+    fontWeight: '700',
+  },
+  logoutBtn: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
+    backgroundColor: 'rgba(239, 68, 68, 0.15)',
+    borderWidth: 1,
+    borderColor: 'rgba(239, 68, 68, 0.3)',
+  },
+  logoutBtnText: {
+    color: '#ef4444',
+    fontSize: 11,
+    fontWeight: '600',
   },
 });

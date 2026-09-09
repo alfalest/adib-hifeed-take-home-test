@@ -3,6 +3,7 @@ import cors from 'cors';
 import { mockAuthMiddleware } from './middleware/auth';
 import { errorHandler } from './middleware/errorHandler';
 import inventoryRoutes from './routes/inventory';
+import authRoutes from './routes/auth';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -21,6 +22,7 @@ app.get('/api/health', (_req, res) => {
 });
 
 // Routes
+app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/inventory', inventoryRoutes);
 
 // Error handler (must be last)

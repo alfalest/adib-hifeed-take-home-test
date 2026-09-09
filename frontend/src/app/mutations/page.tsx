@@ -30,7 +30,7 @@ export default function MutationsPage() {
       setTotalPages(res.pagination.total_pages);
       setTotal(res.pagination.total);
     } catch (err: any) {
-      setError(err.message || 'Failed to fetch mutations');
+      setError(err.message || 'Gagal memuat data Riwayat Mutasi');
     } finally {
       setLoading(false);
     }

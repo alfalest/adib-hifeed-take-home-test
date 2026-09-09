@@ -9,12 +9,25 @@ interface ApiOptions {
 async function apiFetch<T>(endpoint: string, options: ApiOptions = {}): Promise<T> {
   const { method = 'GET', body, headers = {} } = options;
 
+  const authHeaders: Record<string, string> = {};
+  if (typeof window !== 'undefined') {
+    const token = localStorage.getItem('hifeed_token');
+    if (token) {
+      authHeaders['Authorization'] = `Bearer ${token}`;
+    } else {
+      authHeaders['x-user-id'] = 'supervisor-01';
+      authHeaders['x-user-role'] = 'supervisor';
+    }
+  } else {
+    authHeaders['x-user-id'] = 'supervisor-01';
+    authHeaders['x-user-role'] = 'supervisor';
+  }
+
   const res = await fetch(`${API_BASE_URL}${endpoint}`, {
     method,
     headers: {
       'Content-Type': 'application/json',
-      'x-user-id': 'supervisor-01',
-      'x-user-role': 'supervisor',
+      ...authHeaders,
       ...headers,
     },
     body: body ? JSON.stringify(body) : undefined,
@@ -25,6 +38,57 @@ async function apiFetch<T>(endpoint: string, options: ApiOptions = {}): Promise<
 
   if (!res.ok) {
     throw new Error(data.message || 'API request failed');
+  }
+
+  return data;
+}
+
+// ========== Auth Types & Functions ==========
+
+export interface User {
+  id: string;
+  name: string;
+  role: 'supervisor' | 'field_operator';
+}
+
+export interface LoginResponse {
+  success: boolean;
+  data: {
+    token: string;
+    user: User;
+  };
+}
+
+export async function loginApi(userId: string, password: string): Promise<LoginResponse> {
+  const res = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ userId, password }),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.message || 'Login gagal');
+  }
+
+  return data;
+}
+
+export async function getMeApi(token: string): Promise<{ success: boolean; data: User }> {
+  const res = await fetch(`${API_BASE_URL}/api/v1/auth/me`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.message || 'Gagal memverifikasi sesi');
   }
 
   return data;

@@ -8,7 +8,9 @@
     "userInterfaceStyle": "dark",
     "scheme": "hifeed",
     "splash": {
-      "backgroundColor": "#0a0e1a"
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
     },
     "ios": {
       "supportsTablet": true,
@@ -19,7 +21,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#0a0e1a"
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#ffffff"
       },
       "package": "com.hifeed.scanner",
       "permissions": ["android.permission.CAMERA"]

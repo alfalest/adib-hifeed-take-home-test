@@ -59,12 +59,13 @@ export default function StockTable({ items }: StockTableProps) {
                 <tr key={item.id}>
                   <td>
                     <code style={{ 
-                      background: 'rgba(99, 102, 241, 0.08)', 
+                      background: 'var(--hifeed-light)', 
                       padding: '3px 8px', 
                       borderRadius: '6px',
                       fontSize: '12px',
                       fontWeight: 600,
-                      color: 'var(--accent-primary-hover)'
+                      color: 'var(--accent-dark)',
+                      border: '1px solid rgba(0, 171, 126, 0.18)'
                     }}>
                       {item.sku}
                     </code>

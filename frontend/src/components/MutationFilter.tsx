@@ -11,7 +11,7 @@ export default function MutationFilter({ type, search, onTypeChange, onSearchCha
       <input
         className="filter-input"
         type="text"
-        placeholder="🔍 Cari nama pakan atau SKU..."
+        placeholder="Cari nama pakan atau SKU..."
         value={search}
         onChange={(e) => onSearchChange(e.target.value)}
         id="mutation-search"

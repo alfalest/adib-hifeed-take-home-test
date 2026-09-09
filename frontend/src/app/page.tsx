@@ -22,7 +22,7 @@ export default function StockOverview() {
         setItems(itemsRes.data);
         setBatches(batchesRes.data);
       } catch (err: any) {
-        setError(err.message || 'Failed to fetch data');
+        setError(err.message || 'Gagal memuat data');
       } finally {
         setLoading(false);
       }
@@ -60,8 +60,8 @@ export default function StockOverview() {
   return (
     <>
       <div className="page-header">
-        <h2>📊 Stock Overview</h2>
-        <p>Pantau stok pakan ternak secara real-time</p>
+        <h2>Stock Overview</h2>
+        <p>Pantau stok pakan ternak secara realtime</p>
       </div>
 
       <StatsCards

@@ -8,6 +8,7 @@ import {
   Alert,
   ActivityIndicator,
   ScrollView,
+  Image,
 } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { findBatchByQR, processInbound, processDispatch, type BatchDetail } from '@/lib/api';
@@ -155,7 +156,13 @@ export default function ConfirmScreen() {
       {/* Batch Detail Card */}
       <View style={styles.detailCard}>
         <View style={styles.detailHeader}>
-          <Text style={styles.detailIcon}>📦</Text>
+          <View style={styles.detailLogoWrapper}>
+            <Image
+              source={require('../assets/logo.png')}
+              style={styles.detailLogo}
+              resizeMode="contain"
+            />
+          </View>
           <View style={{ flex: 1 }}>
             <Text style={styles.detailName}>{batch.feed_item.name}</Text>
             <Text style={styles.detailSku}>{batch.feed_item.sku}</Text>
@@ -336,9 +343,21 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#1e2740',
   },
+  detailLogoWrapper: {
+    width: 42,
+    height: 42,
+    borderRadius: 12,
+    backgroundColor: '#e8f5f0',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 4,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 171, 126, 0.25)',
+  },
+  detailLogo: { width: 28, height: 28 },
   detailIcon: { fontSize: 32 },
   detailName: { fontSize: 18, fontWeight: '700', color: '#f0f4ff' },
-  detailSku: { fontSize: 13, color: '#6366f1', fontWeight: '600', marginTop: 2 },
+  detailSku: { fontSize: 13, color: '#00ab7e', fontWeight: '600', marginTop: 2 },
   detailGrid: { gap: 16 },
   detailItem: {
     flexDirection: 'row',
@@ -347,7 +366,7 @@ const styles = StyleSheet.create({
   },
   detailLabel: { fontSize: 14, color: '#5b6b8a', fontWeight: '500' },
   detailValue: { fontSize: 14, color: '#f0f4ff', fontWeight: '600', textAlign: 'right', flex: 1, marginLeft: 16 },
-  detailValueHighlight: { color: '#6366f1', fontSize: 16 },
+  detailValueHighlight: { color: '#00ab7e', fontSize: 16 },
   expiredText: { color: '#f87171' },
   nearExpiryText: { color: '#fbbf24' },
 
@@ -424,7 +443,7 @@ const styles = StyleSheet.create({
 
   // Primary Button (reuse)
   primaryButton: {
-    backgroundColor: '#6366f1',
+    backgroundColor: '#00ab7e',
     paddingHorizontal: 32,
     paddingVertical: 16,
     borderRadius: 12,

@@ -32,7 +32,7 @@ export default function MutationTable({ mutations }: MutationTableProps) {
   return (
     <div className="table-container">
       <div className="table-header">
-        <h3>📋 Stock Ledger / Riwayat Mutasi</h3>
+        <h3>Stock Ledger / Riwayat Mutasi</h3>
         <div className="table-actions">
           <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
             {mutations.length} mutasi
@@ -84,13 +84,14 @@ export default function MutationTable({ mutations }: MutationTableProps) {
                   </div>
                 </td>
                 <td>
-                  <code style={{ 
-                    background: 'rgba(99, 102, 241, 0.08)', 
-                    padding: '3px 8px', 
+                  <code style={{
+                    background: 'var(--hifeed-light)',
+                    padding: '3px 8px',
                     borderRadius: '6px',
                     fontSize: '12px',
-                    fontWeight: 500,
-                    color: 'var(--accent-primary-hover)'
+                    fontWeight: 600,
+                    color: 'var(--accent-dark)',
+                    border: '1px solid rgba(0, 171, 126, 0.18)'
                   }}>
                     {mutation.batch.batch_number}
                   </code>
@@ -101,20 +102,22 @@ export default function MutationTable({ mutations }: MutationTableProps) {
                   </span>
                 </td>
                 <td>
-                  <span style={{ 
+                  <span style={{
                     fontWeight: 700,
                     fontSize: '15px',
-                    color: mutation.type === 'INBOUND' ? 'var(--accent-success)' : 'var(--accent-danger)'
+                    color: mutation.type === 'INBOUND' ? 'var(--accent-success)' : 'var(--accent-secondary)'
                   }}>
                     {mutation.type === 'INBOUND' ? '+' : '-'}{mutation.quantity}
                   </span>
                 </td>
                 <td>
-                  <div style={{ 
+                  <div style={{
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '6px',
-                    background: 'rgba(255,255,255,0.04)',
+                    background: '#f1f5f9',
+                    border: '1px solid #e2e8f0',
+                    color: 'var(--text-primary)',
                     padding: '4px 10px',
                     borderRadius: '6px',
                     fontSize: '13px'
@@ -123,8 +126,8 @@ export default function MutationTable({ mutations }: MutationTableProps) {
                   </div>
                 </td>
                 <td>
-                  <span style={{ 
-                    fontSize: '13px', 
+                  <span style={{
+                    fontSize: '13px',
                     color: 'var(--text-muted)',
                     maxWidth: '200px',
                     display: 'inline-block',

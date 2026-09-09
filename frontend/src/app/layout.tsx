@@ -1,10 +1,15 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import Sidebar from '@/components/Sidebar';
+import { AuthProvider } from '@/context/AuthContext';
+import LayoutWrapper from '@/components/LayoutWrapper';
 
 export const metadata: Metadata = {
-  title: 'HiFeed SCOM - Dashboard',
-  description: 'HiFeed Supply Chain & Operations Management Dashboard for warehouse supervisors',
+  title: 'HiFeed - Sustainable Cattle Farming | Dashboard',
+  description: 'HiFeed Supply Chain & Operations Management Dashboard - Transforming cattle farming with sustainable complete feed technology.',
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/hifeed_logo.png',
+  },
 };
 
 export default function RootLayout({
@@ -15,13 +20,13 @@ export default function RootLayout({
   return (
     <html lang="id">
       <body>
-        <div className="app-layout">
-          <Sidebar />
-          <main className="main-content">
+        <AuthProvider>
+          <LayoutWrapper>
             {children}
-          </main>
-        </div>
+          </LayoutWrapper>
+        </AuthProvider>
       </body>
     </html>
   );
 }
+

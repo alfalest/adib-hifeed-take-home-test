@@ -70,11 +70,15 @@ cd backend
 # 2. Install kebutuhan program
 npm install
 
-# 3. Buat dan isi database awal (Otomatis)
+# 3. Salin file konfigurasi environment
+cp .env.example .env
+# (Di Windows Command Prompt, gunakan: copy .env.example .env)
+
+# 4. Buat dan isi database awal (Otomatis)
 npx prisma generate
 npx prisma migrate dev --name init
 
-# 4. Jalankan backend
+# 5. Jalankan backend
 npm run dev
 ```
 
@@ -87,8 +91,8 @@ npm run dev
 Buka **Terminal Baru** (tetap biarkan terminal backend running), lalu jalankan:
 
 ```bash
-# 1. Masuk ke folder web-dashboard
-cd web-dashboard
+# 1. Masuk ke folder frontend
+cd frontend
 
 # 2. Install kebutuhan program
 npm install
@@ -106,8 +110,8 @@ npm run dev
 Buka **Terminal Baru** lagi, lalu jalankan:
 
 ```bash
-# 1. Masuk ke folder mobile-scanner
-cd mobile-scanner
+# 1. Masuk ke folder mobile
+cd mobile
 
 # 2. Install kebutuhan program
 npm install
